@@ -13,7 +13,7 @@ namespace Backend.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class AccountController : Controller
+    public class AccountController : ControllerBase
     {
         private IAccountService _accountService;
         private IJwtService _jwtService;
@@ -24,7 +24,7 @@ namespace Backend.Controllers
         }
         [AllowAnonymous]
         [HttpPost("login-admin")]
-        public async Task<IActionResult> LoginAdmin([FromForm] LoginViewModel loginViewModel)
+        public async Task<IActionResult> LoginAdmin([FromBody] LoginViewModel loginViewModel)
         {
             try
             {

@@ -9,7 +9,7 @@ namespace Backend.Services
         Task AddMovieAsync(MovieViewModel movieViewModel);
 
         // Sửa thông tin một bộ phim
-        Task<int> UpdateMovieAsync(int id, MovieViewModel movieViewModel);
+        Task<int> UpdateMovieAsync(int movieId,MovieViewModel movieViewModel);
 
         // Xóa một bộ phim
         Task<int> DeleteMovieAsync(int id);

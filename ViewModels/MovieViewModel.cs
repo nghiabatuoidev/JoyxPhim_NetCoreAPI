@@ -1,6 +1,4 @@
-﻿using Backend.Models;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿
 using System.ComponentModel.DataAnnotations;
 
 namespace Backend.ViewModels
@@ -8,7 +6,7 @@ namespace Backend.ViewModels
     public class MovieViewModel
     {
 
-        public int MovieId { get; set; }
+        public int? MovieId { get; set; }
 
         [Required]
         [MaxLength(100)]
@@ -43,9 +41,6 @@ namespace Backend.ViewModels
         public bool? IsTrending { get; set; } = false;
 
         [Required]
-        public string? GenreMovie { get; set; }
-
-        [Required]
         [MaxLength(100)]
         public string? MovieTime { get; set; }
 
@@ -65,22 +60,22 @@ namespace Backend.ViewModels
         public int? LangId { get; set; }
 
         [Required]
-        [MaxLength(100)]
-        public string? CountryName { get; set; }
-
-        [Required]
         public int? YearReleaseId { get; set; }
-
 
         public int? ViewNumber { get; set; }
 
         [MaxLength(100)]
         public string? TrailerUrl { get; set; }
 
-
-        public DateTime? Created { get; set; }
-
+        public DateTime? Created { get; set; } = DateTime.Now;
 
         public DateTime? Modified { get; set; }
+
+        [Required]
+        public List<int> Country_ids { get; set; } = new List<int>();
+
+        [Required]
+        public List<int> Category_ids { get; set; } = new List<int>();
+
     }
 }

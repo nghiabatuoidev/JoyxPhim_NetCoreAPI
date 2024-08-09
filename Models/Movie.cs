@@ -48,10 +48,6 @@ public partial class Movie
     [Column("is_trending")]
     public bool? IsTrending { get; set; }
 
-    [Column("genre_movie")]
-    [StringLength(300)]
-    public string? GenreMovie { get; set; }
-
     [Column("movie_time")]
     [StringLength(200)]
     public string? MovieTime { get; set; }
@@ -71,10 +67,6 @@ public partial class Movie
 
     [Column("lang_id")]
     public int? LangId { get; set; }
-
-    [Column("country_name")]
-    [StringLength(200)]
-    public string? CountryName { get; set; }
 
     [Column("year_release_id")]
     public int? YearReleaseId { get; set; }

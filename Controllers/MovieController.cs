@@ -10,7 +10,7 @@ namespace Backend.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class MovieController : Controller
+    public class MovieController : ControllerBase
     {
         private readonly IMovieService _movieService;
 
@@ -37,13 +37,35 @@ namespace Backend.Controllers
             }
         }
 
+        [HttpPut("update/{movieId}")]
+        public async Task<IActionResult> UpdateMovie(int movieId, [FromForm] MovieViewModel movieViewModel)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                if(movieId == null)
+                {
+                    return BadRequest();
+                }
+                await _movieService.UpdateMovieAsync(movieId, movieViewModel);
+                return Ok(new ResponseViewModel { Code = 0, Message = $"Update movie {movieId} successfully!" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResponseViewModel { Code = 1, Message = ex.Message });
+            }
+        }
+
         [HttpGet("find")]
         public async Task<IActionResult> FindMovieByKeyword(string keyword)
         {
             try
             {
                 IEnumerable<Movie> movies = await _movieService.FindMovieByKeyword(keyword);
-                return Ok(new ResponseViewModel { Code = 0, Data = movies, Message =  "Find movie success!"});
+                return Ok(new ResponseViewModel { Code = 0, Data = movies, Message = "Find movie success!" });
 
             }
             catch (Exception ex)
@@ -51,6 +73,26 @@ namespace Backend.Controllers
                 return BadRequest(new ResponseViewModel { Code = 1, Message = ex.Message });
             }
         }
+        [HttpDelete("remove/{movie_id}")]
+        public async Task<IActionResult> RemoveMovie(int movie_id = 0)
+        {
+            try
+            {
+                if (movie_id <= 0)
+                {
+                    return BadRequest();
+                }
+                await _movieService.DeleteMovieAsync(movie_id);
+                return Ok(new ResponseViewModel { Code = 0, Message = "Delete movie success!" });
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResponseViewModel { Code = 1, Message = ex.Message });
+            }
+        }
+
+
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetMovieById(int? id)

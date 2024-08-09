@@ -23,6 +23,8 @@ public partial class JoyxphimContext : DbContext
 
     public virtual DbSet<Episode> Episodes { get; set; }
 
+    public virtual DbSet<EpisodeServer> EpisodeServers { get; set; }
+
     public virtual DbSet<Follow> Follows { get; set; }
 
     public virtual DbSet<Lang> Langs { get; set; }
@@ -32,6 +34,8 @@ public partial class JoyxphimContext : DbContext
     public virtual DbSet<MovieCategory> MovieCategories { get; set; }
 
     public virtual DbSet<MovieCountry> MovieCountries { get; set; }
+
+    public virtual DbSet<Server> Servers { get; set; }
 
     public virtual DbSet<Status> Statuses { get; set; }
 
@@ -65,6 +69,17 @@ public partial class JoyxphimContext : DbContext
             entity.HasKey(e => e.EpisodeId).HasName("PK__Episode__8478035523D8D3A8");
 
             entity.HasOne(d => d.Movie).WithMany(p => p.Episodes).HasConstraintName("FK__Episode__movie_i__4BAC3F29");
+        });
+
+        modelBuilder.Entity<EpisodeServer>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_EpisodeSevers");
+
+            entity.HasOne(d => d.Episode).WithMany(p => p.EpisodeServers)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_EpisodeSevers_Episodes_episode_id");
+
+            entity.HasOne(d => d.Server).WithMany(p => p.EpisodeServers).HasConstraintName("FK_EpisodeSevers_Servers_server_id");
         });
 
         modelBuilder.Entity<Follow>(entity =>
@@ -104,18 +119,26 @@ public partial class JoyxphimContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK_MovieCategory");
 
-            entity.HasOne(d => d.Category).WithMany(p => p.MovieCategories).HasConstraintName("FK__MovieCate__categ__5165187F");
+            entity.HasOne(d => d.Category).WithMany(p => p.MovieCategories)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK__MovieCate__categ__5165187F");
 
-            entity.HasOne(d => d.Movie).WithMany(p => p.MovieCategories).HasConstraintName("FK__MovieCate__movie__5070F446");
+            entity.HasOne(d => d.Movie).WithMany(p => p.MovieCategories)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK__MovieCate__movie__5070F446");
         });
 
         modelBuilder.Entity<MovieCountry>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__MovieCou__F6B00F2125DDFCF7");
 
-            entity.HasOne(d => d.Country).WithMany(p => p.MovieCountries).HasConstraintName("FK__MovieCoun__count__5629CD9C");
+            entity.HasOne(d => d.Country).WithMany(p => p.MovieCountries)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_MovieCountry_Country_country_id");
 
-            entity.HasOne(d => d.Movie).WithMany(p => p.MovieCountries).HasConstraintName("FK__MovieCoun__movie__571DF1D5");
+            entity.HasOne(d => d.Movie).WithMany(p => p.MovieCountries)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_MovieCountry_Movie_movie_id");
         });
 
         modelBuilder.Entity<Status>(entity =>

@@ -8,12 +8,19 @@ namespace Backend.Repositories
         private readonly JoyxphimContext _dbContext;
         public IAccountRepository? AccountRepository { get; }
         public IMovieRepository? MovieRepository { get; }
-
+        public IMovieCountryRepository? MovieCountryRepository { get; }
+        public IMovieCategoryRepository? MovieCategoryRepository { get; }
+        public IEpisodeRepository? EpisodeRepository { get; }
+        public IEpisodeServerRepository? EpisodeServerRepository { get; }
         public UnitOfWork(JoyxphimContext dbContext)
         {
             _dbContext = dbContext;
             AccountRepository = new AccountRepository(dbContext);
             MovieRepository = new MovieRepository(dbContext);
+            MovieCategoryRepository = new MovieCategoryRepository(dbContext);
+            MovieCountryRepository = new MovieCountryRepository(dbContext);
+            EpisodeRepository = new EpisodeRepository(dbContext);
+            EpisodeServerRepository = new EpisodeServerRepository(dbContext);
         }
         public async Task<int> CompleteAsync()
         {

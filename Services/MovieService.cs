@@ -2,6 +2,7 @@
 using Backend.Models;
 using Backend.Repositories;
 using Backend.ViewModels;
+using Microsoft.IdentityModel.Tokens;
 
 
 namespace Backend.Services
@@ -26,6 +27,23 @@ namespace Backend.Services
             {
                 throw new Exception("Add movie failed!");
             }
+            if (movieViewModel.Country_ids.Any())
+            {
+                foreach (int id in movieViewModel.Country_ids)
+                {
+                    MovieCountry movieCountry = new MovieCountry { CountryId = id, MovieId = movie.MovieId };
+                    await _unitOfWork.MovieCountryRepository!.AddAsync(movieCountry);
+                }
+            }
+            if (movieViewModel.Category_ids.Any())
+            {
+                foreach (int id in movieViewModel.Category_ids)
+                {
+                    MovieCategory movieCategory = new MovieCategory { CategoryId = id, MovieId = movie.MovieId };
+                    await _unitOfWork.MovieCategoryRepository!.AddAsync(movieCategory);
+                }
+            }
+            await _unitOfWork.CompleteAsync();
         }
 
         public async Task<int> DeleteMovieAsync(int id)
@@ -37,10 +55,44 @@ namespace Backend.Services
         }
 
 
-        public async Task<int> UpdateMovieAsync(int id, MovieViewModel movieViewModel)
+        public async Task<int> UpdateMovieAsync(int movieId, MovieViewModel movieViewModel)
         {
-            Movie movie = _mapper.Map<Movie>(movieViewModel);
-            _unitOfWork.MovieRepository.Update(movie);
+            Movie movie = await _unitOfWork.MovieRepository!.GetByIdAsync(movieId);
+            if (movie == null) { throw new Exception("Movie not found!"); }
+
+            // Ánh xạ các thuộc tính từ movieViewModel vào thực thể movie hiện tại
+            movieViewModel.Modified = DateTime.Now;
+            _mapper.Map(movieViewModel, movie);
+            _unitOfWork.MovieRepository!.Update(movie);
+
+            // xóa các movie categroty cũ để add cái mới
+            if (movieViewModel.Category_ids.Any())
+            {
+                IEnumerable<MovieCategory> movieCategories = await _unitOfWork.MovieCategoryRepository!.FindAsync(mc => mc.MovieId == movieId);
+                if (movieCategories.Any())
+                {
+                    _unitOfWork.MovieCategoryRepository.RemoveRange(movieCategories);
+                }
+                foreach (int idx in movieViewModel.Category_ids)
+                {
+                    MovieCategory movieCategory = new MovieCategory { CategoryId = idx, MovieId = movieId };
+                    await _unitOfWork.MovieCategoryRepository!.AddAsync(movieCategory);
+                }
+            }
+            // xóa các movie country cũ để add cái mới
+            if (movieViewModel.Country_ids.Any())
+            {
+                IEnumerable<MovieCountry> movieCountries = await _unitOfWork.MovieCountryRepository!.FindAsync(mc => mc.MovieId == movieId);
+                if (movieCountries.Any()) 
+                {
+                _unitOfWork.MovieCountryRepository.RemoveRange(movieCountries);
+                }
+                foreach (int idx in movieViewModel.Country_ids)
+                {
+                    MovieCountry movieCountry = new MovieCountry { CountryId = idx, MovieId = movieId };
+                    await _unitOfWork.MovieCountryRepository!.AddAsync(movieCountry);
+                }
+            }
             return await _unitOfWork.CompleteAsync();
         }
 
@@ -71,6 +123,13 @@ namespace Backend.Services
         {
 
             Movie movie = await _unitOfWork.MovieRepository!.GetByIdAsync(id);
+            if (movie != null)
+            {
+                await _unitOfWork.MovieRepository.IncludeMovieCategoriesAsync(movie);
+                await _unitOfWork.MovieRepository.IncludeMovieCountriesAsync(movie);
+                await _unitOfWork.MovieRepository.IncludeMovieLangsAsync(movie);
+                await _unitOfWork.MovieRepository.IncludeMovieEpisodesAsync(movie);
+            }
             return movie;
         }
 
