@@ -1,5 +1,4 @@
-﻿
-using Backend.Services;
+﻿using Backend.Services;
 using Backend.ViewModels;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication;
@@ -7,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
-
 
 namespace Backend.Controllers
 {

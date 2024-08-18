@@ -6,7 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Models;
 
-public partial class Type
+[Table("Genre")]
+public partial class Genre
 {
     [Key]
     [Column("type_id")]

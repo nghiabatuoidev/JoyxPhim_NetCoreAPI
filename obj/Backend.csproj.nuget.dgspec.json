@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Workspaces\\projects\\joyx-phim\\backend\\backend\\Backend.csproj": {}
+    "D:\\Workspaces\\Projects\\JoyX-Phim\\Backend\\Backend\\Backend.csproj": {}
   },
   "projects": {
-    "D:\\Workspaces\\projects\\joyx-phim\\backend\\backend\\Backend.csproj": {
+    "D:\\Workspaces\\Projects\\JoyX-Phim\\Backend\\Backend\\Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Workspaces\\projects\\joyx-phim\\backend\\backend\\Backend.csproj",
+        "projectUniqueName": "D:\\Workspaces\\Projects\\JoyX-Phim\\Backend\\Backend\\Backend.csproj",
         "projectName": "Backend",
-        "projectPath": "D:\\Workspaces\\projects\\joyx-phim\\backend\\backend\\Backend.csproj",
+        "projectPath": "D:\\Workspaces\\Projects\\JoyX-Phim\\Backend\\Backend\\Backend.csproj",
         "packagesPath": "C:\\Users\\nghia\\.nuget\\packages\\",
-        "outputPath": "D:\\Workspaces\\projects\\joyx-phim\\backend\\backend\\obj\\",
+        "outputPath": "D:\\Workspaces\\Projects\\JoyX-Phim\\Backend\\Backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\nghia\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -15,6 +15,13 @@ namespace Backend.Repositories
         public IEpisodeRepository? EpisodeRepository { get; }
 
         public IEpisodeServerRepository? EpisodeServerRepository { get; }
+        public ICountryRepostiory? CountryRepostiory { get; }
+
+        public ICategoryRepository? CategoryRepository { get; }
+        public IStatusRepository? StatusRepository { get; }
+        public IGenreRepository? GenreRepository { get; }
+        public IYearReleaseRepository? YearReleaseRepository { get; }
+        public ILangRepository? LangRepository { get; }
 
         public Task<int> CompleteAsync();
     }

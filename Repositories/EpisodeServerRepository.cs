@@ -8,5 +8,11 @@ namespace Backend.Repositories
         public EpisodeServerRepository(JoyxphimContext dbContext) : base(dbContext) { 
         
         }
+        public async Task IncludeSeverAsync(EpisodeServer episodeServer)
+        {
+            await _dbContext.Entry(episodeServer)
+                    .Reference(mc => mc.Server)
+                    .LoadAsync();
+        }
     }
 }

@@ -7,10 +7,11 @@ namespace Backend.Repositories
     {
         public Task IncludeMovieCategoriesAsync(Movie movie);
         public Task IncludeMovieCountriesAsync(Movie movie);
-        public Task IncludeMovieLangsAsync(Movie movie);
-        public Task IncludeMovieEpisodesAsync(Movie movie);
-        public Task IncludeMovieSatusesAsync(Movie movie);
-
+        public Task IncludeLangsAsync(Movie movie);
+        public Task IncludeEpisodesAsync(Movie movie);
+        public Task IncludeSatusesAsync(Movie movie);
+        public Task IncludeYearReleasesAsync(Movie movie);
+        public Task IncludeTypeAsync(Movie movie);
 
     }
 }

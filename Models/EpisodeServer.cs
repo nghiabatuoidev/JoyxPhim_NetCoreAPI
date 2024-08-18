@@ -19,9 +19,7 @@ public partial class EpisodeServer
     public int? EpisodeId { get; set; }
 
     [Column("link_embed")]
-    [StringLength(200)]
-    [Unicode(false)]
-    public string? LinkEmbed { get; set; }
+    public string LinkEmbed { get; set; } = null!;
 
     [ForeignKey("EpisodeId")]
     [InverseProperty("EpisodeServers")]

@@ -55,12 +55,9 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
-//
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-    options.JsonSerializerOptions.MaxDepth = 64; // Tăng độ sâu nếu cần
-});
+builder.Services.AddHttpClient();
+
+builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -78,8 +75,12 @@ builder.Services.AddScoped<IMovieCountryRepository, MovieCountryRepository>();
 builder.Services.AddScoped<IMovieCategoryRepository, MovieCategoryRepository>();
 builder.Services.AddScoped<IEpisodeRepository, EpisodeRepository>();
 builder.Services.AddScoped<IEpisodeServerRepository, EpisodeServerRepository>();
-
-
+builder.Services.AddScoped<ICountryRepostiory, CountryRepostiory>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IStatusRepository, StatusRepository>();
+builder.Services.AddScoped<IGenreRepository, GenreRepository>();
+builder.Services.AddScoped<IYearReleaseRepository, YearReleaseRepository>();
+builder.Services.AddScoped<ILangRepository, LangRepository>();
 
 //service
 builder.Services.AddScoped<IAccountService, AccountService>();
@@ -89,6 +90,12 @@ builder.Services.AddScoped<IMovieCountryService, MovieCountryService>();
 builder.Services.AddScoped<IMovieCategoryService, MovieCategoryService>();
 builder.Services.AddScoped<IMovieCategoryService, MovieCategoryService>();
 builder.Services.AddScoped<IEpisodeService, EpisodeService>();
+builder.Services.AddScoped<ICountryService, CountryService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IStatusService, StatusService>();
+builder.Services.AddScoped<IGenreService, GenreService>();
+builder.Services.AddScoped<IYearReleaseService, YearReleaseService>();
+builder.Services.AddScoped<ILangService, LangService>();
 
 
 //auto mapper

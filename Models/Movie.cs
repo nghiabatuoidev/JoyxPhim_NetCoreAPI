@@ -21,6 +21,11 @@ public partial class Movie
     [Unicode(false)]
     public string? MovieOriginName { get; set; }
 
+    [Column("movie_name_search")]
+    [StringLength(200)]
+    [Unicode(false)]
+    public string? MovieNameSearch { get; set; }
+
     [Column("slug")]
     [StringLength(200)]
     [Unicode(false)]
@@ -32,6 +37,9 @@ public partial class Movie
     [Column("thumb_url")]
     [Unicode(false)]
     public string? ThumbUrl { get; set; }
+
+    [Column("episodeTotal")]
+    public int? EpisodeTotal { get; set; }
 
     [Column("type_id")]
     public int? TypeId { get; set; }
@@ -52,14 +60,6 @@ public partial class Movie
     [StringLength(200)]
     public string? MovieTime { get; set; }
 
-    [Column("episode_current")]
-    [StringLength(200)]
-    public string? EpisodeCurrent { get; set; }
-
-    [Column("episode_total")]
-    [StringLength(200)]
-    public string? EpisodeTotal { get; set; }
-
     [Column("quality")]
     [StringLength(100)]
     [Unicode(false)]
@@ -71,20 +71,13 @@ public partial class Movie
     [Column("year_release_id")]
     public int? YearReleaseId { get; set; }
 
-    [Column("view_number")]
-    public int? ViewNumber { get; set; }
-
     [Column("trailer_url")]
-    [StringLength(500)]
-    [Unicode(false)]
     public string? TrailerUrl { get; set; }
 
     [Column("actor_name")]
-    [StringLength(100)]
     public string? ActorName { get; set; }
 
     [Column("director_name")]
-    [StringLength(100)]
     public string? DirectorName { get; set; }
 
     [Column("created", TypeName = "datetime")]
@@ -115,7 +108,7 @@ public partial class Movie
 
     [ForeignKey("TypeId")]
     [InverseProperty("Movies")]
-    public virtual Type? Type { get; set; }
+    public virtual Genre? Type { get; set; }
 
     [ForeignKey("YearReleaseId")]
     [InverseProperty("Movies")]

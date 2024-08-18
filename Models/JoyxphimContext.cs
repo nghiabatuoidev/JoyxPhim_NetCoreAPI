@@ -27,6 +27,8 @@ public partial class JoyxphimContext : DbContext
 
     public virtual DbSet<Follow> Follows { get; set; }
 
+    public virtual DbSet<Genre> Genres { get; set; }
+
     public virtual DbSet<Lang> Langs { get; set; }
 
     public virtual DbSet<Movie> Movies { get; set; }
@@ -38,8 +40,6 @@ public partial class JoyxphimContext : DbContext
     public virtual DbSet<Server> Servers { get; set; }
 
     public virtual DbSet<Status> Statuses { get; set; }
-
-    public virtual DbSet<Type> Types { get; set; }
 
     public virtual DbSet<YearRelease> YearReleases { get; set; }
 
@@ -68,7 +68,9 @@ public partial class JoyxphimContext : DbContext
         {
             entity.HasKey(e => e.EpisodeId).HasName("PK__Episode__8478035523D8D3A8");
 
-            entity.HasOne(d => d.Movie).WithMany(p => p.Episodes).HasConstraintName("FK__Episode__movie_i__4BAC3F29");
+            entity.HasOne(d => d.Movie).WithMany(p => p.Episodes)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK__Episode__movie_i__4BAC3F29");
         });
 
         modelBuilder.Entity<EpisodeServer>(entity =>
@@ -91,6 +93,13 @@ public partial class JoyxphimContext : DbContext
             entity.HasOne(d => d.Movie).WithMany(p => p.Follows).HasConstraintName("FK_FollowMovie_Movie");
 
             entity.HasOne(d => d.User).WithMany(p => p.Follows).HasConstraintName("FK_follow_UserId_User");
+        });
+
+        modelBuilder.Entity<Genre>(entity =>
+        {
+            entity.HasKey(e => e.TypeId).HasName("PK_MovieType");
+
+            entity.Property(e => e.Value).IsFixedLength();
         });
 
         modelBuilder.Entity<Lang>(entity =>
@@ -144,13 +153,6 @@ public partial class JoyxphimContext : DbContext
         modelBuilder.Entity<Status>(entity =>
         {
             entity.HasKey(e => e.StatusId).HasName("PK_MovieStatus");
-
-            entity.Property(e => e.Value).IsFixedLength();
-        });
-
-        modelBuilder.Entity<Type>(entity =>
-        {
-            entity.HasKey(e => e.TypeId).HasName("PK_MovieType");
 
             entity.Property(e => e.Value).IsFixedLength();
         });

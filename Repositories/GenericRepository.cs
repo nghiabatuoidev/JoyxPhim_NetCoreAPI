@@ -45,10 +45,13 @@ namespace Backend.Repositories
                 query = orderBy(query);
             }
 
-            return await query
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
+            // Nếu page và pageSize khác 0, áp dụng phân trang
+            if (page > 0 && pageSize > 0)
+            {
+                query = query.Skip((page - 1) * pageSize).Take(pageSize);
+            }
+
+            return await query.ToListAsync();
         }
         public async Task<T> GetByIdAsync(int id)
         {
@@ -65,6 +68,9 @@ namespace Backend.Repositories
             _dbContext.Set<T>().RemoveRange(entities);
         }
 
-
+        public async Task<int> GetTotalCountAsync()
+        {
+            return await _dbContext.Set<T>().CountAsync();
+        }
     }
 }

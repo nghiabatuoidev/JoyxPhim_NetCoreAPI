@@ -5,9 +5,6 @@ namespace Backend.ViewModels
 {
     public class MovieViewModel
     {
-
-        public int? MovieId { get; set; }
-
         [Required]
         [MaxLength(100)]
         public string? MovieName { get; set; }
@@ -19,11 +16,12 @@ namespace Backend.ViewModels
         [MaxLength(100)]
         public string? Slug { get; set; }
 
-
         public string? MovieContent { get; set; }
 
         [MaxLength(200)]
         public string? ThumbUrl { get; set; }
+
+        public string? EpisodeTotal { get; set; }
 
         [Required]
         public int? TypeId { get; set; }
@@ -31,26 +29,14 @@ namespace Backend.ViewModels
         [Required]
         public int? StatusId { get; set; }
 
-        [Required]
         public bool? IsSubDocquyen { get; set; } = false;
 
-        [Required]
         public bool? IsChieurap { get; set; } = false;
 
-        [Required]
         public bool? IsTrending { get; set; } = false;
 
-        [Required]
         [MaxLength(100)]
         public string? MovieTime { get; set; }
-
-        [Required]
-        [MaxLength(100)]
-        public string? EpisodeCurrent { get; set; }
-
-        [Required]
-        [MaxLength(100)]
-        public string? EpisodeTotal { get; set; }
 
         [Required]
         [MaxLength(100)]
@@ -62,20 +48,19 @@ namespace Backend.ViewModels
         [Required]
         public int? YearReleaseId { get; set; }
 
-        public int? ViewNumber { get; set; }
-
         [MaxLength(100)]
         public string? TrailerUrl { get; set; }
 
-        public DateTime? Created { get; set; } = DateTime.Now;
+        public string? ActorName { get; set; }
 
-        public DateTime? Modified { get; set; }
-
+        public string? DirectorName { get; set; }
         [Required]
         public List<int> Country_ids { get; set; } = new List<int>();
 
         [Required]
         public List<int> Category_ids { get; set; } = new List<int>();
+        public DateTime? Created { get; set; }
 
+        public DateTime? Modified { get; set; }
     }
 }

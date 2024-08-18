@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "AOs8Jmhn60c=",
+  "dgSpecHash": "gKllkfrLBcs=",
   "success": true,
-  "projectFilePath": "D:\\Workspaces\\projects\\joyx-phim\\backend\\backend\\Backend.csproj",
+  "projectFilePath": "D:\\Workspaces\\Projects\\JoyX-Phim\\Backend\\Backend\\Backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\nghia\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\nghia\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",

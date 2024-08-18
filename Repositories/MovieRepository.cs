@@ -8,20 +8,22 @@ namespace Backend.Repositories
         public MovieRepository(JoyxphimContext dbContext) : base(dbContext) { }
         public async Task IncludeMovieCountriesAsync(Movie movie)
         {
-            // Sử dụng Entry để nạp MovieCategories nếu movie đã được lấy
             await _dbContext.Entry(movie)
-                .Collection(m => m.MovieCountries)
-                .LoadAsync();
+                    .Collection(m => m.MovieCountries)
+                    .LoadAsync();
         }
         public async Task IncludeMovieCategoriesAsync(Movie movie)
         {
-            // Sử dụng Entry để nạp MovieCategories nếu movie đã được lấy
-            await _dbContext.Entry(movie)
-                .Collection(m => m.MovieCategories)
-                .LoadAsync();
+            // Nạp MovieCountries nếu chưa được nạp
+            if (!_dbContext.Entry(movie).Collection(m => m.MovieCategories).IsLoaded)
+            {
+                await _dbContext.Entry(movie)
+                    .Collection(m => m.MovieCategories)
+                    .LoadAsync();
+            }
         }
 
-        public async Task IncludeMovieLangsAsync(Movie movie)
+        public async Task IncludeLangsAsync(Movie movie)
         {
 
             await _dbContext.Entry(movie)
@@ -29,19 +31,31 @@ namespace Backend.Repositories
                 .LoadAsync();
         }
 
-        public async Task IncludeMovieEpisodesAsync(Movie movie)
+        public async Task IncludeEpisodesAsync(Movie movie)
         {
-            // Sử dụng Entry để nạp MovieCategories nếu movie đã được lấy
             await _dbContext.Entry(movie)
                 .Collection(m => m.Episodes)
                 .LoadAsync();
         }
 
-        public async Task IncludeMovieSatusesAsync(Movie movie)
+        public async Task IncludeSatusesAsync(Movie movie)
         {
-            // Sử dụng Entry để nạp MovieCategories nếu movie đã được lấy
             await _dbContext.Entry(movie)
                 .Reference(m => m.Status)
+                .LoadAsync();
+        }
+
+        public async Task IncludeYearReleasesAsync(Movie movie)
+        {
+            await _dbContext.Entry(movie)
+                .Reference(m => m.YearRelease)
+                .LoadAsync();
+        }
+
+        public async Task IncludeTypeAsync(Movie movie)
+        {
+            await _dbContext.Entry(movie)
+                .Reference(m => m.Type)
                 .LoadAsync();
         }
     }

@@ -14,5 +14,7 @@ namespace Backend.Repositories
         Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> expression);
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entities);
+
+        public Task<int> GetTotalCountAsync();
     }
 }

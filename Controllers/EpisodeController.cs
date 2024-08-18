@@ -1,11 +1,11 @@
-﻿
-using Backend.Models;
-using Backend.Services;
+﻿using Backend.Services;
 using Backend.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
 {
+    [Authorize]
     [Route("api/v1/[controller]")]
     [ApiController]
     public class EpisodeController : ControllerBase
@@ -16,8 +16,8 @@ namespace Backend.Controllers
             _episodeService = episodeService;
         }
 
-        [HttpPost("add")]
-        public async Task<IActionResult> AddEpisode([FromForm] EpisodeViewModel episodeViewModel)
+        [HttpPost("add/{movieId}")]
+        public async Task<IActionResult> AddEpisode(int movieId, [FromBody] EpisodeViewModel episodeViewModel)
         {
             try
             {
@@ -25,7 +25,11 @@ namespace Backend.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                await _episodeService.AddEpisodeAsync(episodeViewModel);
+                if (movieId <= 0)
+                {
+                    return BadRequest();
+                }
+                await _episodeService.AddEpisodeAsync(movieId, episodeViewModel);
                 return Ok(new ResponseViewModel { Code = 0, Message = "Add episode successfully!" });
             }
             catch (Exception ex)
@@ -33,8 +37,10 @@ namespace Backend.Controllers
                 return BadRequest(new ResponseViewModel { Code = 1, Message = ex.Message });
             }
         }
+
+     
         [HttpPut("update/{episode_id}")]
-        public async Task<IActionResult> UpdateEpisode(int episode_id, [FromForm] EpisodeViewModel episodeViewModel)
+        public async Task<IActionResult> UpdateEpisode(int episode_id, [FromBody] EpisodeViewModel episodeViewModel)
         {
             try
             {
@@ -42,7 +48,8 @@ namespace Backend.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                if (episode_id == null || episode_id <= 0)
+
+                if (episode_id <= 0)
                 {
                     return BadRequest(episode_id);
                 }
@@ -55,36 +62,39 @@ namespace Backend.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("{episode_id}")]
         public async Task<IActionResult> GetEpisodeById(int episode_id)
         {
             try
             {
-                if (episode_id <= 0 || episode_id == null)
+                if (episode_id <= 0 )
                 {
                     return BadRequest(episode_id);
                 }
-                Episode episode = await _episodeService.GetEpisodeByIdAsync(episode_id);
+                EpisodeViewModelResponse episode = await _episodeService.GetEpisodeByIdAsync(episode_id);
                 if (episode == null)
                 {
-                    return NotFound(new ResponseViewModel { Code = 2, Message = "Episode Not Found" });
+                    return NotFound(new ResponseViewModel { Code = 1, Message = "Episode Not Found" });
                 }
-                return Ok(new ResponseViewModel { Code = 0, Data = episode, Message = $"Get episode {episode_id} successfully!"});
+                return Ok(new ResponseViewModel { Code = 0, Data = episode, Message = $"Get episode {episode_id} successfully!" });
             }
-            catch (Exception ex) {
-                return BadRequest(new ResponseViewModel { Code = 1, Data = ex.Message});
+            catch (Exception ex)
+            {
+                return BadRequest(new ResponseViewModel { Code = 1, Data = ex.Message });
             }
         }
+        [AllowAnonymous]
 
-        [HttpGet("all")]
-        public async Task<IActionResult> GetAllEpisode([FromQuery]int page, [FromQuery]int pageSize)
+        [HttpGet("get-all/{movieId}")]
+        public async Task<IActionResult> GetAllEpisode(int movieId)
         {
             try
             {
-                IEnumerable<Episode> episodes = await _episodeService.GetAllEpisodeAsync(page,pageSize);
+                IEnumerable<EpisodeViewModelResponse> episodes = await _episodeService.GetAllEpisodeAsync(movieId);
                 if (episodes == null)
                 {
-                    return NotFound(new ResponseViewModel { Code = 2, Message = "Episodes Not Found" });
+                    return NotFound(new ResponseViewModel { Code = 1, Message = "Episodes Not Found" });
                 }
                 return Ok(new ResponseViewModel { Code = 0, Data = episodes, Message = "Get all episodes successfully!" });
             }
@@ -93,19 +103,39 @@ namespace Backend.Controllers
                 return BadRequest(new ResponseViewModel { Code = 1, Data = ex.Message });
             }
         }
-
+        [Authorize]
         [HttpDelete("remove/{episode_id}")]
         public async Task<IActionResult> RemoveEpisode(int episode_id)
         {
             try
             {
-                if (episode_id <= 0 || episode_id == null)
+                if (episode_id <= 0)
                 {
                     return BadRequest(episode_id);
                 }
                 await _episodeService.DeleteEpisodeByIdAsync(episode_id);
-               
+
                 return Ok(new ResponseViewModel { Code = 0, Message = $"Remove episode {episode_id} successfully!" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResponseViewModel { Code = 1, Data = ex.Message });
+            }
+        }
+
+     
+        [HttpDelete("remove-range")]
+        public async Task<IActionResult> RemoveRangeEpisode([FromBody] List<int> episodeIds)
+        {
+            try
+            {
+                if (episodeIds.Count <= 0)
+                {
+                    return NotFound();
+                }
+                await _episodeService.DeleteRangeEpisodeByIdAsync(episodeIds);
+
+                return Ok(new ResponseViewModel { Code = 0, Message = $"Remove range episode successfully!" });
             }
             catch (Exception ex)
             {

@@ -17,6 +17,7 @@ public partial class Episode
 
     [Column("name")]
     [StringLength(200)]
+    [Unicode(false)]
     public string? Name { get; set; }
 
     [Column("slug")]
